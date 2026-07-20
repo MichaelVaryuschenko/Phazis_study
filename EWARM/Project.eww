@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspace>
+    <project>
+        <path>$WS_DIR$\..\..\Phazis_CC_ESP12F\EWARM\Phazis_CC_ESP12F.ewp</path>
+    </project>
+    <project>
+        <path>$WS_DIR$\Phazis_study.ewp</path>
+    </project>
+    <batchBuild />
+</workspace>
