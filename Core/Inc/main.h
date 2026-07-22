@@ -81,7 +81,9 @@ void Error_Handler(void);
 #define BUTTON_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
-
+// Маски событий прерываний
+#define IT_EVENT_TIM16 0x01
+#define IT_EVENT_SPI_CPLT 0x02 // Прерывание по завершению приёма/передачи по SPI, управляемого DMA
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

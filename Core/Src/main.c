@@ -21,8 +21,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "../../Modules/led/led.h"
-#include "../../Modules/button/button.h"
+#include "led.h"
+#include "button.h"
+#include "bl0942.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -65,6 +66,8 @@ DMA_HandleTypeDef hdma_usart1_tx;
  * false for LED glimmering between green and red
  */
 bool led_glow_mode = true;
+// Флаги прерываний
+volatile uint8_t it_events = 0;
 
 /* USER CODE END PV */
 
@@ -89,8 +92,8 @@ static void MX_TIM17_Init(void);
 /* USER CODE BEGIN 0 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   if(htim->Instance==TIM16) {
-    led_default_control(led_glow_mode);
-    button_handler();
+    it_events |= IT_EVENT_TIM16;
+    bl_start_reading_regs();
   }
 }
 
@@ -149,6 +152,15 @@ int main(void)
   while (1)
   {
     led_handler();
+    if(it_events & IT_EVENT_TIM16) {
+      it_events &= ~IT_EVENT_TIM16;
+      led_default_control(led_glow_mode);
+      button_handler();
+    }
+    if(it_events & IT_EVENT_SPI_CPLT) {
+      it_events &= ~IT_EVENT_SPI_CPLT;
+      bl_process_data();
+    }
     /* USER CODE END WHILE */
     
     /* USER CODE BEGIN 3 */
